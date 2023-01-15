@@ -1,0 +1,14 @@
+mysqlclient
+sqlalchemy
+uvicorn
+fastapi
+pymysql
+pandas
+sqlalchemy-utils
+fastapi-sqlalchemy
+bcrypt
+shortuuid
+PyJWT
+"passlib[bcrypt]
+python-multipart
+tortoise
