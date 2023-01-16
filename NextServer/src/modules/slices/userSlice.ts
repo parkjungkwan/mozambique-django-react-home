@@ -1,21 +1,23 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit"
 import { User } from '@/modules/types'
-
+import { AppState } from "../store";
 type UserState = {
     data: User[]
     status: 'idle' | 'loading' | 'failed'
     isLoggined: boolean
-    error: any
+    error: any,
+    token: string
 }
 const initialState: UserState = {
     data: [],
     status: 'idle',
     isLoggined: false,
-    error: null
+    error: null,
+    token: "test"
 }
 
 const userSlice = createSlice({
-    name: 'userSlice',
+    name: 'user',
     initialState,
     reducers: {
         joinRequest(state: UserState, action: PayloadAction<User>){
@@ -70,4 +72,44 @@ export const {joinRequest, joinSuccess, joinFailure,
 } = userSlice.actions
 export const userAction = actions
 export default reducer
-        
+/** 
+interface Reply{
+    id: number,
+    comment: string,
+    count: number
+}
+
+const initialState2: Reply = { // 여기 초기값이 선언되어있다. 
+    id : 5,
+    comment : 'test',
+    count : 199
+  };
+
+  
+  export const countSelector = (state: AppState): number =>   // 카운트를 저장
+    state.reply.count || initialState2.count;   // 값이 있으면 사용하고 아니면 초기값을 가져다 쓴다
+  
+  export const commentSelector = (state: AppState): string => // 코멘트를 저장
+    state.reply.comment || initialState2.comment;
+  
+  export const replySelector = createSelector( // 위에서 저장한 데이터를 찐 셀렉터로 만들어주자
+    countSelector,			     // 각각의 셀렉터들을 넣고
+    commentSelector,
+    (count, comment) => ({ 	 // 마지막 인자로 함수를 넣는데 state 자체를 인자로 넣고, 
+        count, comment 		 // 리턴받을 데이터를 넣어준다 (filter나 계산식 등으로 가공해도 된다)
+    }) 
+  );
+
+ */
+export const dataSelector = (state: AppState): [] => state.user.data || initialState.data;
+
+export const tokenSelector = (state: AppState): string => state.user.token || initialState.token;
+
+export const userSelector = createSelector(
+    dataSelector,
+    tokenSelector,
+  (data, token) => {
+    return `My Data is ${data}. token is ${token} `;
+  }
+);
+       
